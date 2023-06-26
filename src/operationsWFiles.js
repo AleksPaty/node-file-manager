@@ -23,14 +23,26 @@ export const createFile = async(curDir, filename) => {
     } 
 }
 
-export const renameFile = async(oldPath, newFileName, text="It's done!") => {
+export const renameFile = async(curDir, data, text="It's done!") => {
     try {
-        let filePath = path.dirname(oldPath)
-        await fs.rename(oldPath, `${filePath}/${newFileName}`)
+        const pathObj = path.parse(data)
+        let pathToFile;
+        if(path.isAbsolute(pathObj.dir)) {
+            pathToFile = path.normalize(pathObj.dir);
+        } else { 
+            pathToFile = path.join(curDir, path.normalize(pathObj.dir))
+        }
+
+        const typeFile1 = path.extname(pathObj.name).slice(0, path.extname(pathObj.name).indexOf(' '))
+        const typeFile2 = pathObj.ext       
+        let [oldNameFile, newNameFile] = pathObj.name.split(typeFile1)
+        if(newNameFile.startsWith(' ')) newNameFile = newNameFile.slice(1)
+
+        await fs.rename(`${pathToFile}${path.sep}${oldNameFile}${typeFile1}`, `${pathToFile}${path.sep}${newNameFile}${typeFile2}`)
             .then(() => console.log(text))
             .catch((err) => {throw err})
     } catch (err) {
-        console.log('Operation failed')
+        console.log(`Operation failed: ${err}`)
     }
 }
 

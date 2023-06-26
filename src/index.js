@@ -1,4 +1,3 @@
-import { ReadStream } from 'fs';
 import { homedir } from 'os';
 import * as readline from 'node:readline';
 import { goWorkingDirectory, goDedicatedDir, showAllInDirectory } from './navigation.js';
@@ -49,8 +48,7 @@ const great = async() => {
                     } else console.log('Invalid input')
                     break;
                 case 'rn':
-                    let [oldPath, newFile] = line.slice(3).split(' ')
-                    await renameFile(oldPath, newFile)
+                    await renameFile(workingDir, line.slice(3))
                     break;
                 case 'cp':
                     let [cpOldPath, cpNewPath] = line.slice(3).split(' ')
