@@ -51,12 +51,10 @@ const great = async() => {
                     await renameFile(workingDir, line.slice(3))
                     break;
                 case 'cp':
-                    let [cpOldPath, cpNewPath] = line.slice(3).split(' ')
-                    await copyFile(cpOldPath, cpNewPath)
+                    await copyFile(workingDir, line.slice(3))
                     break;
                 case 'mv':
-                    let [PathFile, mvNewPath] = line.slice(3).split(' ')
-                    await removeFile(PathFile, mvNewPath)
+                    await removeFile(workingDir, line.slice(3))
                     break;
                 case 'rm':
                     let deletingFile = line.slice(3)
